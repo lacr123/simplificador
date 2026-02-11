@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SIMPLIFICA AI</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#101a33;
+      --muted:#9fb0d0;
+      --text:#eaf0ff;
+      --accent:#7dd3fc;
+      --accent2:#a78bfa;
+      --danger:#fb7185;
+      --ok:#86efac;
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(125,211,252,.25), transparent 55%),
+                  radial-gradient(900px 600px at 110% 20%, rgba(167,139,250,.22), transparent 50%),
+                  var(--bg);
+      color:var(--text);
+    }
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+    header{
+      margin: 10px 0 20px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .title{
+      font-weight: 800;
+      letter-spacing: .6px;
+      font-size: clamp(26px, 3.2vw, 40px);
+      line-height: 1.05;
+    }
+    .subtitle{
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.4;
+      max-width: 54ch;
+    }
+    .badge{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      height: fit-content;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    @media (max-width: 920px){
+      .grid{grid-template-columns: 1fr;}
+    }
+    .card{
+      background: rgba(16,26,51,.75);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow:hidden;
+    }
+    .card h2{
+      margin:0;
+      padding: 16px 16px 10px;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing:.4px;
+      text-transform: uppercase;
+    }
+    .card .content{
+      padding: 0 16px 16px;
+    }
+    label{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin: 12px 0 6px;
+    }
+    input[type="password"], input[type="text"], textarea{
+      width:100%;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 12px;
+      outline: none;
+    }
+    textarea{
+      min-height: 250px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+    input:focus, textarea:focus{
+      border-color: rgba(125,211,252,.55);
+      box-shadow: 0 0 0 4px rgba(125,211,252,.12);
+    }
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .row > *{flex:1}
+    .btn{
+      appearance:none;
+      border:1px solid rgba(125,211,252,.55);
+      background: linear-gradient(135deg, rgba(125,211,252,.22), rgba(167,139,250,.18));
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 800;
+      cursor:pointer;
+      transition: transform .06s ease, filter .15s ease;
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      width:100%;
+      margin-top: 12px;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+      filter:saturate(.6);
+    }
+    .ghost{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-weight:700;
+      width:auto;
+      padding: 10px 12px;
+      margin-top: 0;
+    }
+    .hint{
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .warn{
+      border-left: 3px solid rgba(251,113,133,.9);
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(251,113,133,.08);
+      color: #ffd7de;
+      font-size: 12px;
+      line-height: 1.45;
+      margin-top: 12px;
+    }
+    .ok{
+      border-left: 3px solid rgba(134,239,172,.9);
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(134,239,172,.08);
+      color: #ddffe9;
+      font-size: 12px;
+      line-height: 1.45;
+      margin-top: 12px;
+    }
+    .out{
+      border:1px dashed rgba(255,255,255,.18);
+      background: rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 220px;
+      line-height: 1.55;
+    }
+    .out p{margin: 0 0 10px}
+    .out p:last-child{margin-bottom:0}
+    .meta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .pill{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+    .spinner{
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,.22);
+      border-top-color: rgba(125,211,252,.95);
+      border-radius: 999px;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    footer{
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    code.inline{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 6px;
+      border:1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(0,0,0,.18);
+      color: #dbeafe;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="title">SIMPLIFICA AI</div>
+        <div class="subtitle">Resumindo para facilitar, simplificando para transformar.</div>
+      </div>
+      <div class="badge" title="Dica de segurança">
+        <span>⚠️</span>
+        <span>Evite usar chave real em apps públicos</span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Entrada -->
+      <section class="card">
+        <h2>1) Entradas</h2>
+        <div class="content">
+          <label for="apiKey">Chave da API da OpenAI</label>
+          <div class="row">
+            <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off" />
+            <button id="toggleKey" class="btn ghost" type="button" style="flex:0 0 auto;">Mostrar</button>
+          </div>
+          <div class="hint">
+            A chave fica apenas no seu navegador (salva em <code class="inline">sessionStorage</code> enquanto a aba estiver aberta).
+          </div>
+          <div class="warn">
+            <strong>Importante:</strong> colocar chave no front-end expõe sua credencial a qualquer pessoa que abra a página e saiba inspecionar o código/rede.
+            Para uso real (especialmente com documentos sensíveis), o ideal é chamar a OpenAI por um <strong>backend</strong> seu (proxy).
+          </div>
+
+          <label for="doc">Cole aqui o documento jurídico</label>
+          <textarea id="doc" placeholder="Cole o texto do documento (decisão, despacho, sentença, etc.)..."></textarea>
+
+          <button id="run" class="btn" type="button">
+            <span id="runIcon">✨</span>
+            <span id="runText">Gerar resumo simples</span>
+          </button>
+
+          <div class="meta">
+            <span class="pill">Endpoint: <code class="inline">POST /v1/responses</code></span>
+            <span class="pill">Modelo: <code class="inline">gpt-5.2</code></span>
+            <span class="pill">Saída: até 3 parágrafos</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Saída -->
+      <section class="card">
+        <h2>2) Resultado</h2>
+        <div class="content">
+          <div id="status" class="hint">Cole o documento, informe a chave e clique em “Gerar resumo simples”.</div>
+          <div id="output" class="out" aria-live="polite"></div>
+
+          <div class="row" style="margin-top:12px;">
+            <button id="copy" class="btn ghost" type="button">Copiar</button>
+            <button id="clear" class="btn ghost" type="button">Limpar</button>
+          </div>
+
+          <div class="ok">
+            Dica: se o texto vier com termos técnicos, rode novamente pedindo “ainda mais simples” (o app já tenta isso, mas alguns documentos são… criaturas cósmicas).
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      Este app usa a <code class="inline">Responses API</code> da OpenAI (conforme documentação oficial). :contentReference[oaicite:0]{index=0}
+    </footer>
+  </div>
+
+  <script>
+    // -----------------------------
+    // SIMPLIFICA AI (front-end demo)
+    // -----------------------------
+
+    const els = {
+      apiKey: document.getElementById("apiKey"),
+      toggleKey: document.getElementById("toggleKey"),
+      doc: document.getElementById("doc"),
+      run: document.getElementById("run"),
+      runIcon: document.getElementById("runIcon"),
+      runText: document.getElementById("runText"),
+      status: document.getElementById("status"),
+      output: document.getElementById("output"),
+      copy: document.getElementById("copy"),
+      clear: document.getElementById("clear"),
+    };
+
+    // Restaura chave temporária da sessão (não persiste após fechar a aba)
+    const savedKey = sessionStorage.getItem("OPENAI_API_KEY");
+    if (savedKey) els.apiKey.value = savedKey;
+
+    function setStatus(msg, kind = "hint") {
+      els.status.className = kind; // reuse classes: hint / warn / ok
+      els.status.textContent = msg;
+    }
+
+    function setLoading(isLoading) {
+      els.run.disabled = isLoading;
+      els.runIcon.innerHTML = isLoading ? '<span class="spinner"></span>' : "✨";
+      els.runText.textContent = isLoading ? "Gerando..." : "Gerar resumo simples";
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      }[c]));
+    }
+
+    function normalizeToParagraphs(text) {
+      const raw = (text || "").trim();
+      if (!raw) return "";
+      // Quebra por linhas vazias, mantém no máximo 3 parágrafos.
+      const parts = raw
+        .split(/\n\s*\n+/g)
+        .map(p => p.trim())
+        .filter(Boolean)
+        .slice(0, 3);
+
+      // Se veio tudo em um bloco, tenta quebrar em até 3 por pontos finais longos.
+      if (parts.length === 1) {
+        const sentences = parts[0].split(/(?<=[.!?])\s+/);
+        const third = Math.ceil(sentences.length / 3);
+        const p1 = sentences.slice(0, third).join(" ").trim();
+        const p2 = sentences.slice(third, 2 * third).join(" ").trim();
+        const p3 = sentences.slice(2 * third).join(" ").trim();
+        const alt = [p1, p2, p3].filter(Boolean).slice(0, 3);
+        return alt.map(p => `<p>${escapeHtml(p)}</p>`).join("");
+      }
+
+      return parts.map(p => `<p>${escapeHtml(p)}</p>`).join("");
+    }
+
+    function buildInstruction() {
+      // Instruções enxutas e bem específicas, para “forçar” o formato.
+      return [
+        "Você é um assistente que simplifica documentos jurídicos para o cidadão comum.",
+        "Responda em português do Brasil.",
+        "Gere um resumo em linguagem simples, com NO MÁXIMO 3 parágrafos curtos.",
+        "Use frases curtas. Evite termos técnicos. Tom respeitoso e objetivo.",
+        "Explique, de forma clara e acessível:",
+        "(i) do que se trata o documento e o que foi decidido;",
+        "(ii) o que a pessoa precisa fazer agora (se for o caso);",
+        "(iii) o que acontece depois.",
+        "Não invente fatos. Se algo não estiver no texto, diga que não está claro."
+      ].join("\n");
+    }
+
+    async function callOpenAI({ apiKey, documentText }) {
+      // Formato do "input" como lista de mensagens (system + user),
+      // conforme referência da Responses API. :contentReference[oaicite:1]{index=1}
+      const payload = {
+        model: "gpt-5.2",
+        input: [
+          {
+            role: "system",
+            content: [{ type: "input_text", text: buildInstruction() }]
+          },
+          {
+            role: "user",
+            content: [{ type: "input_text", text: documentText }]
+          }
+        ],
+        max_output_tokens: 380
+      };
+
+      const res = await fetch("https://api.openai.com/v1/responses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        // Tenta trazer erro de forma legível.
+        const msg =
+          data?.error?.message ||
+          data?.message ||
+          `Erro HTTP ${res.status}`;
+        throw new Error(msg);
+      }
+
+      // Extrai o texto do primeiro output do tipo "message" com content "output_text".
+      // A documentação mostra content.type="output_text" com o campo "text". :contentReference[oaicite:2]{index=2}
+      const outputs = Array.isArray(data.output) ? data.output : [];
+      for (const item of outputs) {
+        if (item?.type === "message" && Array.isArray(item.content)) {
+          const part = item.content.find(c => c?.type === "output_text" && typeof c?.text === "string");
+          if (part?.text) return part.text;
+        }
+      }
+
+      // Fallback (caso a estrutura venha diferente)
+      if (typeof data?.output_text === "string") return data.output_text;
+      return "";
+    }
+
+    els.toggleKey.addEventListener("click", () => {
+      const isPw = els.apiKey.type === "password";
+      els.apiKey.type = isPw ? "text" : "password";
+      els.toggleKey.textContent = isPw ? "Ocultar" : "Mostrar";
+    });
+
+    els.apiKey.addEventListener("input", () => {
+      sessionStorage.setItem("OPENAI_API_KEY", els.apiKey.value.trim());
+    });
+
+    els.run.addEventListener("click", async () => {
+      const apiKey = els.apiKey.value.trim();
+      const documentText = els.doc.value.trim();
+
+      els.output.innerHTML = "";
+
+      if (!apiKey) {
+        setStatus("Informe sua chave da OpenAI para continuar.", "warn");
+        return;
+      }
+      if (!documentText || documentText.length < 50) {
+        setStatus("Cole um texto maior do documento (pelo menos algumas linhas).", "warn");
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setStatus("Enviando para a OpenAI e gerando resumo...", "hint");
+
+        const summary = await callOpenAI({ apiKey, documentText });
+
+        if (!summary.trim()) {
+          setStatus("A resposta veio vazia. Tente novamente ou verifique seu modelo/permissões.", "warn");
+          return;
+        }
+
+        els.output.innerHTML = normalizeToParagraphs(summary);
+        setStatus("Resumo gerado.", "ok");
+      } catch (err) {
+        setStatus(`Falha ao gerar resumo: ${err.message}`, "warn");
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    els.copy.addEventListener("click", async () => {
+      const text = els.output.textContent.trim();
+      if (!text) {
+        setStatus("Nada para copiar ainda.", "warn");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus("Copiado para a área de transferência.", "ok");
+      } catch {
+        setStatus("Não consegui copiar automaticamente. Selecione e copie manualmente.", "warn");
+      }
+    });
+
+    els.clear.addEventListener("click", () => {
+      els.doc.value = "";
+      els.output.innerHTML = "";
+      setStatus("Campos limpos.", "hint");
+    });
+  </script>
+</body>
+</html>
